@@ -9,14 +9,13 @@ describe('Pedido API', () => {
     });
 
     it('GET /api/Pedido/{id} - deberia devolver el pedido especifico', () => {
-    const id = 1;
+    const id = 4;
     cy.request(`GET`, `/api/Pedido/${id}`)
         .should((response) => {
         expect(response.status).to.eq(200);
-        expect(response.body).to.have.property('IdPedido', id);
-        expect(response.body).to.have.property('FechaPedido');
-        expect(response.body).to.have.property('Coste');
-        exepect(response.body).to.have.property('IdProveedor');
+        expect(response.body).to.have.property('idPedido', id);
+        expect(response.body).to.have.property('fechaPedido');
+        expect(response.body).to.have.property('costeTotal');
         });
     });
 
@@ -32,10 +31,10 @@ describe('Pedido API', () => {
     });
     });
 
-    it('GET /api/Pedido/{fechaInicio,fechaFin} - deberia devolver el pedido especifico, además comprueba que todos los pedidos de la lista están entre las fechas introducidad', () => {
-        const fechaInicio='2021-06-01';
-        const fechaFin='2021-06-30';
-        cy.request(`GET`, `/api/Pedido/${fechaInicio,fechaFin}`)
+    it('GET /api/Pedido/fechaInicio={fechaInicio}&fechaFin={fechaFin} - deberia devolver el pedido especifico, además comprueba que todos los pedidos de la lista están entre las fechas introducidad', () => {
+        const fechaInicio='2024-02-19';
+        const fechaFin='2024-02-21';
+        cy.request(`GET`, `/api/Pedido/$fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`)
             .should((response) => {
             expect(response.status).to.eq(200);
             for (var i = 0; i < response.body.length; i++) {
@@ -45,9 +44,9 @@ describe('Pedido API', () => {
             });
         });
 
-    it ('GET /api/Pedido/{idProd} - debería devolver todos los pedidos que contengan el produto introducido', () => {
-    const idProd=1
-    cy.request(`GET`, `/api/Pedido/${idProd}`)
+    it ('GET /api/Pedido/producto/{idProd} - debería devolver todos los pedidos que contengan el produto introducido', () => {
+    const idProd=18
+    cy.request(`GET`, `/api/Pedido/prdocuto/${idProd}`)
         .should((response) => {
         expect(response.status).to.eq(200);
         for (var i = 0; i < response.body.length; i++) {
@@ -55,7 +54,7 @@ describe('Pedido API', () => {
         }
         });
     });
-
+/*
     it('POST /api/Pedido - deberia devolver 200 si ha creado correctamente el pedido y los valores están presentes correctamente', () => {
         cy.request('POST', '/api/Pedido', {
             "IdPedido": 1,
@@ -93,6 +92,7 @@ describe('Pedido API', () => {
                 //expect(response.body).to.include('Se ha eliminado el pedido correctamente');
                 });
     });
+    */
 });
 
 

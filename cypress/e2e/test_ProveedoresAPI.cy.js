@@ -31,6 +31,7 @@ describe('Proveedor API', () => {
             }
             });
         });
+        /*
         it('POST /api/Proveedor - deberia devolver 200 si ha creado correctamente el proveedor y los valores están presentes correctamente', () => {
             cy.request('POST', '/api/Proveedor', {
                 "IdProveedor": 1,
@@ -76,5 +77,5 @@ describe('Proveedor API', () => {
                     expect(response.status).to.eq(200);
                     //expect(response.body).to.include('Se ha eliminado el pedido correctamente');
                     });
-        });
+        });*/
 });

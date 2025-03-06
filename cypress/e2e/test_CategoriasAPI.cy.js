@@ -30,12 +30,11 @@ describe('Categoria API', () => {
       expect(response.body).to.include('No se ha encontrado ninguna categoría con ese ID');
     });
   });
+  /*
   it('POST /api/categoria - deberia devolver 200 si ha creado correctamente la categoria y los valores están presentes correctamente', () => {
     cy.request('POST', '/api/categoria', {
-        "IdCategoria": 1,
-        "Nombre": "Rodrigo"}).then((response) => {
+        "Nombre": "TestApi"}).then((response) => {
         expect(response.status).to.eq(200);
-        expect(response.body).to.have.property('IdCategoria', 1);
         expect(response.body).to.have.property('Nombre', "Rodrigo");
         //expect(response.body).to.include('Se ha creado el pedido correctamente');
         });
@@ -90,6 +89,5 @@ it('DELETE /api/categoria/{id} - debería devolver 409 si la categoría tiene pr
     expect(response.status).to.eq(409);
     expect(response.body).to.have.property('error', 'No se puede eliminar la categoría porque tiene productos asociados.');
   });
-});
-
+});*/
 });

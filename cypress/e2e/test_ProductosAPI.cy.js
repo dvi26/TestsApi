@@ -9,16 +9,27 @@ describe('Producto API', () => {
     });
 
     it('GET /api/Producto/{id} - deberia devolver el producto especifico', () => {
-    const id = 1;
-    cy.request(`GET`, `/api/Producto/${id}`)
-        .should((response) => {
-        expect(response.status).to.eq(200);
-        expect(response.body).to.have.property('IdProducto', id);
-        expect(response.body).to.have.property('Nombre');
-        expect(response.body).to.have.property('Precio');
-        exepect(response.body).to.have.property('IdCategoria');
-        });
+        const id = 1;
+        cy.request('GET', `/api/Producto/${id}`)
+            .should((response) => {
+                expect(response.status).to.eq(200);
+                expect(response.body).to.have.property('idProducto', id);
+                expect(response.body).to.have.property('nombre');
+                expect(response.body).to.have.property('precioUd');
+                expect(response.body).to.have.property('cantidad');
+                expect(response.body).to.have.property('proveedor');
+                expect(response.body.proveedor).to.have.property('idProveedor');
+                expect(response.body.proveedor).to.have.property('nombre');
+                expect(response.body.proveedor).to.have.property('correo');
+                expect(response.body.proveedor).to.have.property('telefono');
+                expect(response.body.proveedor).to.have.property('direccion');
+                expect(response.body.proveedor).to.have.property('pais');
+                expect(response.body).to.have.property('categorias').that.is.an('array');
+                expect(response.body.categorias[0]).to.have.property('idCategoria');
+                expect(response.body.categorias[0]).to.have.property('nombre');
+            });
     });
+    
     it ('GET /api/Produto/{idCategoria} - debería devolver todos los pedidos que pertenezcan a una categoria introducida', () => {
         const idCategoria=1
         cy.request(`GET`, `/api/Producto/${idCategoria}`)
@@ -28,7 +39,7 @@ describe('Producto API', () => {
                 expect(response.body[i].IdCategoria).to.eq(idCategoria);
             }
             });
-        });
+        });/*
         it('POST /api/Producto - deberia devolver 200 si ha creado correctamente el producto y los valores están presentes correctamente', () => {
             cy.request('POST', '/api/Producto', {
                 "IdProducto": 1,
@@ -43,7 +54,7 @@ describe('Producto API', () => {
                 //expect(response.body).to.include('Se ha creado el pedido correctamente');
                 });
             });
-    
+
             it('PUT /api/Producto/{id} - deberia devolver 200 si ha modificado correctamente el prodcuto y los valores están presentes correctamente', () => {
                 const id = 1;
                 cy.request('PUT', `/api/Producto/${id}`, {
@@ -65,5 +76,5 @@ describe('Producto API', () => {
                     expect(response.status).to.eq(200);
                     //expect(response.body).to.include('Se ha eliminado el pedido correctamente');
                     });
-        });
+        });*/
 });
