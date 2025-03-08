@@ -15,7 +15,7 @@ describe('Pedido API', () => {
 
   // Test para obtener un pedido específico por ID
   it('GET /api/Pedido/{id} - debería devolver el pedido específico', () => {
-    const id = 4; // ID del pedido que se busca
+    const id = 1; // ID del pedido que se busca
     cy.request(`GET`, `/api/Pedido/${id}`)
       .should((response) => {
         // Comprobamos que el status es 200
@@ -44,8 +44,8 @@ describe('Pedido API', () => {
 
   // Test para obtener pedidos dentro de un rango de fechas
   it('GET /api/Pedido/fechas?fechaInicio=2024-02-19&fechaFin=2024-02-21 - debería devolver pedidos dentro de las fechas', () => {
-    const fechaInicio = '2024-02-19';
-    const fechaFin = '2024-02-21';
+    const fechaInicio = '2024-02-28';
+    const fechaFin = '2024-04-21';
     
     cy.request('GET', `/api/Pedido/fechas?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`)
       .should((response) => {
