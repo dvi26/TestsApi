@@ -58,33 +58,63 @@ describe('Pedido API', () => {
           expect(pedidoFecha).to.be.lessThan(new Date(fechaFin));
         });
       });
-  });
-
-  // Test POST 
-  /*
-  it('POST /api/Pedido - debería crear un nuevo pedido', () => {
+    });
+  /*it('POST /api/Pedido - debería crear un nuevo pedido', async () => {
     const requestBody = [
       {
-        "idProducto": 7,
+        "idProducto": 99,
         "proveedor": {
-          "idProveedor": 3,
-          "nombre": "PruebasCypress",
-          "correo": "info@hogarperfecto.com",
-          "telefono": "+34-912-3456",
-          "direccion": "Calle Mayor 12, Madrid, España",
+          "idProveedor": 1,
+          "nombre": "TechZone",
+          "correo": "contacto@techzone.com",
+          "telefono": "123456789",
+          "direccion": "Calle Tecnología 45",
           "pais": "España"
         },
-        "nombre": "Producto de Prueba",
-        "precioUd": 500.75,
-        "cantidad": 10,
-        "precioTotal": 5007.50,
+        "nombre": "Smartphone",
+        "precioUd": 500,
+        "cantidad": 3,
+        "precioTotal": 1500,
         "categorias": [
-          { "idCategoria": 1, "nombre": "Electrónica" },
-          { "idCategoria": 2, "nombre": "Hogar" }
+          {
+            "idCategoria": 1,
+            "nombre": "Electrónica"
+          }
         ]
       }
     ];
-    
+  
+    const response = await request(app)
+      .post('/api/Pedido')
+      .send(requestBody)
+      .set('Accept', 'application/json');
+  
+    expect(response.status).toBe(201);
+    expect(response.body).toMatchObject([
+      {
+        "idProducto": expect.any(Number),
+        "proveedor": {
+          "idProveedor": expect.any(Number),
+          "nombre": expect.any(String),
+          "correo": expect.any(String),
+          "telefono": expect.any(String),
+          "direccion": expect.any(String),
+          "pais": expect.any(String)
+        },
+        "nombre": expect.any(String),
+        "precioUd": expect.any(Number),
+        "cantidad": expect.any(Number),
+        "precioTotal": expect.any(Number),
+        "categorias": expect.arrayContaining([
+          {
+            "idCategoria": expect.any(Number),
+            "nombre": expect.any(String)
+          }
+        ])
+      }
+    ]);
+  });
+  
     cy.request({
       method: 'POST',
       url: '/api/Pedido',  
@@ -101,7 +131,7 @@ describe('Pedido API', () => {
   it('PUT /api/Pedido/{id} - debería devolver 200 si ha modificado correctamente el pedido y el mensaje está presente', () => {
     const id = 35;
     cy.request('PUT', `/api/Pedido/${id}`, {
-      "idPedido": 35,
+      "idPedido": 1,
       "productos": [
         {
           "idProducto": 1,
@@ -134,7 +164,7 @@ describe('Pedido API', () => {
   // Test DELETE 
   /*
   it('DELETE /api/Pedido/{id} - debería devolver 200 si ha eliminado correctamente el pedido', () => {
-    const id = 48;
+    const id = 5;
     cy.request('DELETE', `/api/Pedido/${id}`)
       .should((response) => {
         expect(response.status).to.eq(200);
