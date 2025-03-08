@@ -34,7 +34,7 @@ describe('Pedido API', () => {
     it('GET /api/Pedido/fechaInicio={fechaInicio}&fechaFin={fechaFin} - deberia devolver el pedido especifico, además comprueba que todos los pedidos de la lista están entre las fechas introducidad', () => {
         const fechaInicio='2024-02-19';
         const fechaFin='2024-02-21';
-        cy.request(`GET`, `/api/Pedido/$fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`)
+        cy.request('GET', `/api/Pedido/fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`)
             .should((response) => {
             expect(response.status).to.eq(200);
             for (var i = 0; i < response.body.length; i++) {
