@@ -60,7 +60,7 @@ describe('Pedido API', () => {
       });
   });
 
-  // Test POST (comentado, si se descomentara debe estar completo)
+  // Test POST 
   /*
   it('POST /api/Pedido - debería crear un nuevo pedido', () => {
     const requestBody = [
@@ -91,13 +91,12 @@ describe('Pedido API', () => {
       body: requestBody,
       headers: { 'Content-Type': 'application/json' },
     }).then((response) => {
-      // Verificamos que el status sea 200 (éxito)
       expect(response.status).to.eq(200);
     });
   });
   */
 
-  // Test PUT (comentado, si se descomentara debe estar completo)
+  // Test PUT 
   /*
   it('PUT /api/Pedido/{id} - debería devolver 200 si ha modificado correctamente el pedido y el mensaje está presente', () => {
     const id = 35;
@@ -126,23 +125,19 @@ describe('Pedido API', () => {
       "costeTotal": 1600,
       "fechaPedido": "2025-03-07T14:42:09.097"
     }).then((response) => {
-      // Verificamos que el status sea 200
       expect(response.status).to.eq(200);
-      // Verificamos que el mensaje de éxito esté presente
       expect(response.body).to.eq('Se ha actualizado el pedido correctamente');
     });
   });
   */
 
-  // Test DELETE (comentado, si se descomentara debe estar completo)
+  // Test DELETE 
   /*
   it('DELETE /api/Pedido/{id} - debería devolver 200 si ha eliminado correctamente el pedido', () => {
     const id = 48;
     cy.request('DELETE', `/api/Pedido/${id}`)
       .should((response) => {
-        // Verificamos que el status sea 200
         expect(response.status).to.eq(200);
-        // Se podría verificar el mensaje de éxito si estuviera disponible
         // expect(response.body).to.include('Se ha eliminado el pedido correctamente');
       });
   });
