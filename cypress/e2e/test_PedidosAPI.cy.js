@@ -4,7 +4,7 @@ describe('Pedido API', () => {
   it('GET /api/Pedido - debería devolver una lista de pedidos', () => {
     cy.request('GET', '/api/Pedido') 
       .should((response) => {
-        // Comprobamos que el status es 200 (éxito)
+        // Comprobamos que el status es 200 
         expect(response.status).to.eq(200);
         // Comprobamos que la respuesta es un array
         expect(response.body).to.be.an('array');
@@ -38,7 +38,6 @@ describe('Pedido API', () => {
     }).should((response) => {
       // Verificamos que el status sea 404
       expect(response.status).to.eq(404);
-      // Se podría verificar el mensaje de error si estuviera disponible
       // expect(response.body).to.include('No se ha encontrado ningun pedido con ese ID');
     });
   });
