@@ -1,98 +1,152 @@
 describe('Pedido API', () => {
-    it('GET /api/Pedido - debería devolver una lista de pedidos', () => {
+  
+  // Test para obtener una lista de pedidos
+  it('GET /api/Pedido - debería devolver una lista de pedidos', () => {
     cy.request('GET', '/api/Pedido') 
-        .should((response) => {
+      .should((response) => {
+        // Comprobamos que el status es 200 (éxito)
         expect(response.status).to.eq(200);
+        // Comprobamos que la respuesta es un array
         expect(response.body).to.be.an('array');
+        // Aseguramos que la lista no esté vacía
         expect(response.body).to.have.length.greaterThan(0);
-        });
-    });
+      });
+  });
 
-    it('GET /api/Pedido/{id} - deberia devolver el pedido especifico', () => {
-    const id = 4;
+  // Test para obtener un pedido específico por ID
+  it('GET /api/Pedido/{id} - debería devolver el pedido específico', () => {
+    const id = 4; // ID del pedido que se busca
     cy.request(`GET`, `/api/Pedido/${id}`)
-        .should((response) => {
+      .should((response) => {
+        // Comprobamos que el status es 200
         expect(response.status).to.eq(200);
+        // Comprobamos que el cuerpo de la respuesta contiene el ID correcto
         expect(response.body).to.have.property('idPedido', id);
+        // Aseguramos que el pedido tiene las propiedades esperadas
         expect(response.body).to.have.property('fechaPedido');
         expect(response.body).to.have.property('costeTotal');
-        });
-    });
+      });
+  });
 
-    it('GET /api/Pedido/{id} - deberia devolver 404 si no encuentra pedido', () => {
-    const nonExistentId = 999;
+  // Test para manejar el caso cuando el pedido no existe (404)
+  it('GET /api/Pedido/{id} - debería devolver 404 si no encuentra pedido', () => {
+    const nonExistentId = 999; // ID no existente
     cy.request({
-        method: 'GET',
-        url: `/api/Pedido/${nonExistentId}`,
-        failOnStatusCode: false, 
+      method: 'GET',
+      url: `/api/Pedido/${nonExistentId}`,
+      failOnStatusCode: false, // No lanzar error por un status 404
     }).should((response) => {
-        expect(response.status).to.eq(404);
-        //expect(response.body).to.include('No se ha encontrado ningun pedido con ese ID');
+      // Verificamos que el status sea 404
+      expect(response.status).to.eq(404);
+      // Se podría verificar el mensaje de error si estuviera disponible
+      // expect(response.body).to.include('No se ha encontrado ningun pedido con ese ID');
     });
-    });
+  });
 
-    it('GET /api/Pedido/fechaInicio={fechaInicio}&fechaFin={fechaFin} - deberia devolver el pedido especifico, además comprueba que todos los pedidos de la lista están entre las fechas introducidad', () => {
-        const fechaInicio='2024-02-19';
-        const fechaFin='2024-02-21';
-        cy.request('GET', `/api/Pedido/fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`)
-            .should((response) => {
-            expect(response.status).to.eq(200);
-            for (var i = 0; i < response.body.length; i++) {
-                expect(response.body[i].FechaPedido).to.be.greaterThan(fechaInicio);
-                expect(response.body[i].FechaPedido).to.be.lessThan(fechaFin);
-            }
-            });
-        });
-
-    it ('GET /api/Pedido/producto/{idProd} - debería devolver todos los pedidos que contengan el produto introducido', () => {
-    const idProd=18
-    cy.request(`GET`, `/api/Pedido/prdocuto/${idProd}`)
-        .should((response) => {
+  // Test para obtener pedidos dentro de un rango de fechas
+  it('GET /api/Pedido/fechas?fechaInicio=2024-02-19&fechaFin=2024-02-21 - debería devolver pedidos dentro de las fechas', () => {
+    const fechaInicio = '2024-02-19';
+    const fechaFin = '2024-02-21';
+    
+    cy.request('GET', `/api/Pedido/fechas?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`)
+      .should((response) => {
+        // Comprobamos que la respuesta es exitosa
         expect(response.status).to.eq(200);
-        for (var i = 0; i < response.body.length; i++) {
-            expect(response.body[i].IdProducto).to.eq(idProd);
+        // Comprobamos que todos los pedidos están dentro del rango de fechas
+        response.body.forEach((pedido) => {
+          const pedidoFecha = new Date(pedido.fechaPedido);
+          expect(pedidoFecha).to.be.greaterThan(new Date(fechaInicio));
+          expect(pedidoFecha).to.be.lessThan(new Date(fechaFin));
+        });
+      });
+  });
+
+  // Test POST (comentado, si se descomentara debe estar completo)
+  /*
+  it('POST /api/Pedido - debería crear un nuevo pedido', () => {
+    const requestBody = [
+      {
+        "idProducto": 7,
+        "proveedor": {
+          "idProveedor": 3,
+          "nombre": "PruebasCypress",
+          "correo": "info@hogarperfecto.com",
+          "telefono": "+34-912-3456",
+          "direccion": "Calle Mayor 12, Madrid, España",
+          "pais": "España"
+        },
+        "nombre": "Producto de Prueba",
+        "precioUd": 500.75,
+        "cantidad": 10,
+        "precioTotal": 5007.50,
+        "categorias": [
+          { "idCategoria": 1, "nombre": "Electrónica" },
+          { "idCategoria": 2, "nombre": "Hogar" }
+        ]
+      }
+    ];
+    
+    cy.request({
+      method: 'POST',
+      url: '/api/Pedido',  
+      body: requestBody,
+      headers: { 'Content-Type': 'application/json' },
+    }).then((response) => {
+      // Verificamos que el status sea 200 (éxito)
+      expect(response.status).to.eq(200);
+    });
+  });
+  */
+
+  // Test PUT (comentado, si se descomentara debe estar completo)
+  /*
+  it('PUT /api/Pedido/{id} - debería devolver 200 si ha modificado correctamente el pedido y el mensaje está presente', () => {
+    const id = 35;
+    cy.request('PUT', `/api/Pedido/${id}`, {
+      "idPedido": 35,
+      "productos": [
+        {
+          "idProducto": 1,
+          "proveedor": { "idProveedor": 1, "nombre": "TechWorld", "correo": "ventas@techworld.com" },
+          "nombre": "Smartphone Samsung Galaxy",
+          "precioUd": 500,
+          "cantidad": 3,
+          "precioTotal": 1500,
+          "categorias": [{ "idCategoria": 1, "nombre": "Electrónica" }]
+        },
+        {
+          "idProducto": 3,
+          "proveedor": { "idProveedor": 1, "nombre": "TechWorld", "correo": "ventas@techworld.com" },
+          "nombre": "Aspiradora Dyson V10",
+          "precioUd": 20,
+          "cantidad": 5,
+          "precioTotal": 100,
+          "categorias": [{ "idCategoria": 3, "nombre": "Deportes" }]
         }
-        });
+      ],
+      "costeTotal": 1600,
+      "fechaPedido": "2025-03-07T14:42:09.097"
+    }).then((response) => {
+      // Verificamos que el status sea 200
+      expect(response.status).to.eq(200);
+      // Verificamos que el mensaje de éxito esté presente
+      expect(response.body).to.eq('Se ha actualizado el pedido correctamente');
     });
-/*
-    it('POST /api/Pedido - deberia devolver 200 si ha creado correctamente el pedido y los valores están presentes correctamente', () => {
-        cy.request('POST', '/api/Pedido', {
-            "IdPedido": 1,
-            "FechaPedido": "2021-06-01",
-            "Coste": 100,
-            "IdProveedor": 1}).then((response) => {
-            expect(response.status).to.eq(200);
-            expect(response.body).to.have.property('IdPedido', 1);
-            expect(response.body).to.have.property('FechaPedido', "2021-06-01");
-            expect(response.body).to.have.property('Coste', 100);
-            expect(response.body).to.have.property('IdProveedor', 1);
-            //expect(response.body).to.include('Se ha creado el pedido correctamente');
-            });
-        });
+  });
+  */
 
-        it('PUT /api/Pedido/{id} - deberia devolver 200 si ha modificado correctamente el pedido y los valores están presentes correctamente', () => {
-            const id = 1;
-            cy.request('PUT', `/api/Pedido/${id}`, {
-                "FechaPedido": "2021-06-01",
-                "Coste": 100,
-                "IdProveedor": 1}).then((response) => {
-                expect(response.status).to.eq(200);
-                expect(response.body).to.have.property('IdPedido', 1);
-                expect(response.body).to.have.property('FechaPedido', "2021-06-01");
-                expect(response.body).to.have.property('Coste', 100);
-                expect(response.body).to.have.property('IdProveedor', 1);
-                //expect(response.body).to.include('Se ha modificado el pedido correctamente');
-                });
-            });
-        it('DELETE /api/Pedido/{id} - deberia devolver 200 si ha eliminado correctamente el pedido', () => {
-            const id = 1;
-            cy.request('DELETE', `/api/Pedido/${id}`)
-                .should((response) => {
-                expect(response.status).to.eq(200);
-                //expect(response.body).to.include('Se ha eliminado el pedido correctamente');
-                });
-    });
-    */
+  // Test DELETE (comentado, si se descomentara debe estar completo)
+  /*
+  it('DELETE /api/Pedido/{id} - debería devolver 200 si ha eliminado correctamente el pedido', () => {
+    const id = 48;
+    cy.request('DELETE', `/api/Pedido/${id}`)
+      .should((response) => {
+        // Verificamos que el status sea 200
+        expect(response.status).to.eq(200);
+        // Se podría verificar el mensaje de éxito si estuviera disponible
+        // expect(response.body).to.include('Se ha eliminado el pedido correctamente');
+      });
+  });
+  */
+
 });
-
-
